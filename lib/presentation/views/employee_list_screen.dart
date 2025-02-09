@@ -1,0 +1,153 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_work_track/core/constants/app_colors.dart';
+import 'package:flutter_work_track/core/constants/app_constants.dart';
+import 'package:flutter_work_track/core/constants/app_images.dart';
+import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/data/models/employee_model.dart';
+import 'package:flutter_work_track/presentation/cubit/employee_cubit.dart';
+import 'package:flutter_work_track/presentation/cubit/employee_state.dart';
+import 'package:flutter_work_track/routes/app_routes.dart';
+import 'package:flutter_work_track/presentation/widgets/employee_card.dart';
+import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class EmployeeListScreen extends StatefulWidget {
+  const EmployeeListScreen({super.key});
+
+  @override
+  State<EmployeeListScreen> createState() => _EmployeeListScreenState();
+}
+
+class _EmployeeListScreenState extends State<EmployeeListScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(AppStrings.employeeListTitle,
+            style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500)),
+        leading: Container(),
+        leadingWidth: 0,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.pushNamed(context, AppRoutes.addEditEmployee);
+          context.read<EmployeeCubit>().loadEmployees(); // Refresh list after returning
+        },
+        backgroundColor: AppColors.primaryBlue,
+        child: const Icon(Icons.add, color: AppColors.whiteTextColor),
+      ),
+      body: BlocBuilder<EmployeeCubit, EmployeeState>(
+        bloc: context.watch<EmployeeCubit>()..loadEmployees(),
+        builder: (context, state) {
+          if (state is EmployeeLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is EmployeeLoaded) {
+            List<EmployeeModel> employees = state.employees;
+
+            DateTime currentDate = DateTime.now();
+            List<EmployeeModel> currentEmployees = employees
+                .where((e) =>
+                    e.dateOfLeaveCompany == null ||
+                    DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate))
+                .toList();
+
+            List<EmployeeModel> previousEmployees = employees
+                .where((e) =>
+                    e.dateOfLeaveCompany != null &&
+                    DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
+                .toList();
+
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView(
+                    children: [
+                      if (currentEmployees.isNotEmpty)
+                        _buildSectionTitle(context, AppStrings.currentEmployTitle),
+                      if (currentEmployees.isNotEmpty)
+                        _buildEmployeeList(
+                          context,
+                          currentEmployees,
+                          isEmployed: true,
+                        ),
+                      if (previousEmployees.isNotEmpty)
+                        _buildSectionTitle(context, AppStrings.previousEmployTitle),
+                      if (previousEmployees.isNotEmpty)
+                        _buildEmployeeList(
+                          context,
+                          previousEmployees,
+                        ),
+                    ],
+                  ),
+                ),
+                Container(
+                  color: Colors.grey.shade300,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    AppStrings.swipeLeftDeleteTitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.greyTextAccentColor),
+                  ),
+                )
+              ],
+            );
+          } else if (state is EmployeeError) {
+            return Center(child: Image.asset(AppImages.noDataFoundIcon));
+          } else {
+            return Center(child: Image.asset(AppImages.noDataFoundIcon));
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildEmployeeList(BuildContext context, List<EmployeeModel> employees,
+      {bool isEmployed = false}) {
+    final cubit = context.read<EmployeeCubit>();
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: employees.length,
+      itemBuilder: (context, index) {
+        final employee = employees[index];
+        return EmployeeCard(
+          employee: employee,
+          isEmployed: isEmployed,
+          onEdit: () async {
+            await Navigator.pushNamed(
+              context,
+              AppRoutes.addEditEmployee,
+              arguments: {"employee": employee},
+            );
+            cubit.loadEmployees(); // Refresh list
+          },
+          onDelete: () {
+            cubit.deleteEmployee(employee.id);
+            showSnackBar(
+                AppStrings.empDeletedSuccessTitle,
+                snackbarAction: SnackBarAction(
+                    label: AppStrings.undoTitle,
+                    onPressed: () {
+                      cubit.addEmployee(employee,undoItem: true);
+                    },
+                  ),
+              );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      color: Colors.grey.shade300,
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.primaryBlue),
+      ),
+    );
+  }
+}
