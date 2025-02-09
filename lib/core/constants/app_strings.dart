@@ -15,7 +15,8 @@ class AppStrings{
   static const String addEmployeeDetails = 'Add Employee Details';
   static const String editEmployeeDetails = 'Edit Employee Details';
 
-  static const String startEndDateError = 'Start Date and End Date are not same.';
+  static const String startEndDateError = 'Joining Date and Leaving Date are not same.';
+  static const String startBeforeDate = 'Joining Date must be before Leaving Date.';
   static const String pleaseFillFieldsError = 'Please fill all fields';
   static const String employeeAddedSuccess = 'Employee Added Successfully';
   static const String employeeUpdatedSuccess = 'Employee Updated Successfully';

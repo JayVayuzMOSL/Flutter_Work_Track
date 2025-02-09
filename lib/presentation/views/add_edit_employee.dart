@@ -12,6 +12,7 @@ import 'package:flutter_work_track/presentation/cubit/add_edit_employee_cubit.da
 import 'package:flutter_work_track/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_work_track/presentation/widgets/show_position_picker_dialog.dart';
 import 'package:flutter_work_track/routes/app_routes.dart';
+import 'package:intl/intl.dart';
 
 class AddEditEmployeeScreen extends StatelessWidget {
   final EmployeeModel? employee;
@@ -166,6 +167,10 @@ class AddEditEmployeeScreen extends StatelessWidget {
     }
     if(state.startDate == state.endDate){
       showSnackBar(AppStrings.startEndDateError);
+      return;
+    }
+    if(DateFormat("d MMM yyyy").parse(state.startDate!).isAfter(DateFormat("d MMM yyyy").parse(state.endDate!))){
+      showSnackBar(AppStrings.startBeforeDate);
       return;
     }
 
