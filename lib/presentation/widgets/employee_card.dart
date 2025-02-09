@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
@@ -26,50 +27,66 @@ class _EmployeeCardState extends State<EmployeeCard> {
   bool isDismissed = false;
   @override
   Widget build(BuildContext context) {
-    if (isDismissed) return const SizedBox.shrink();
+    if (isDismissed) return SizedBox.shrink();
     return GestureDetector(
         onTap: () {
-      Navigator.pushNamed(
-          context,
-          AppRoutes.addEditEmployee,
-          arguments: {"employee": widget.employee}
-      );
-    },
-    child: Dismissible(
-      key: ValueKey(widget.employee.id),
-      direction: DismissDirection.endToStart, // Swipe from right to left
-      background: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        alignment: Alignment.centerRight,
-        color: AppColors.redBackgroundColor, // Background color when swiped
-        child: Image.asset(AppImages.deleteIcon, color: AppColors.whiteTextColor),
-      ),
-      onDismissed: (direction) {
-        setState(() => isDismissed = true);
-        widget.onDelete(); // Remove employee from list
-      },
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.employee.name,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.textAccentColor),
+          Navigator.pushNamed(
+              context,
+              AppRoutes.addEditEmployee,
+              arguments: {"employee": widget.employee}
+          );
+        },
+        child: Dismissible(
+          key: ValueKey(widget.employee.id),
+          direction: DismissDirection.endToStart, // Swipe from right to left
+          background: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            alignment: Alignment.centerRight,
+            color: AppColors.redBackgroundColor, // Background color when swiped
+            child: Image.asset(
+              AppImages.deleteIcon,
+              color: AppColors.whiteTextColor,
+              width: 24.w,
+              height: 24.h,
             ),
-            Text(
-              widget.employee.position,
-              style:Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.greyTextAccentColor),
+          ),
+          onDismissed: (direction) {
+            setState(() => isDismissed = true);
+            widget.onDelete(); // Remove employee from list
+          },
+          child: Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.employee.name,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textAccentColor,
+                    fontSize: 16.sp,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  widget.employee.position,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                    color: AppColors.greyTextAccentColor,
+                    fontSize: 14.sp,
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  widget.isEmployed
+                      ? 'From ${widget.employee.dateOfJoining}'
+                      : '${widget.employee.dateOfJoining} - ${widget.employee.dateOfLeaveCompany}',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.greyTextAccentColor,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              widget.isEmployed
-                  ? 'From ${widget.employee.dateOfJoining}'
-                  : '${widget.employee.dateOfJoining} - ${widget.employee.dateOfLeaveCompany}',
-              style:Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.greyTextAccentColor),
-            ),
-          ],
-        ),
-      ),
-    ));
+          ),
+        ));
   }
 }

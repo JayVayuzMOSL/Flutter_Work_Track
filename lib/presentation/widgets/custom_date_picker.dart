@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/presentation/widgets/date_dialog_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDatePicker extends StatelessWidget {
   final String selectedDate;
@@ -28,23 +29,23 @@ class CustomDatePicker extends StatelessWidget {
         },
         child: InputDecorator(
           decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.calendar_today, color: AppColors.primaryBlue),
+            prefixIcon: Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: 20.w),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: Colors.grey, width: 1.5.w),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: AppColors.primaryBlue, width: 1.5.w),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(color: Colors.green, width: 2.0),
+              borderRadius: BorderRadius.circular(10.r),
+              borderSide: BorderSide(color: Colors.green, width: 2.w),
             ),
           ),
           child: Text(
             formatDate(),
-            style: const TextStyle(fontSize: 16),
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.textAccentColor),
           ),
         ),
       ),

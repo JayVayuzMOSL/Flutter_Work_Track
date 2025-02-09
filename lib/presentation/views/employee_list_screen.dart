@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
@@ -25,7 +26,8 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.employeeListTitle,
-            style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w500)),
+          style: GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w500),
+        ),
         leading: Container(),
         leadingWidth: 0,
       ),
@@ -35,27 +37,23 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
           context.read<EmployeeCubit>().loadEmployees(); // Refresh list after returning
         },
         backgroundColor: AppColors.primaryBlue,
-        child: const Icon(Icons.add, color: AppColors.whiteTextColor),
+        child: Icon(Icons.add, color: AppColors.whiteTextColor, size: 24.sp),
       ),
       body: BlocBuilder<EmployeeCubit, EmployeeState>(
         bloc: context.watch<EmployeeCubit>()..loadEmployees(),
         builder: (context, state) {
           if (state is EmployeeLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: SizedBox(width: 30.w, height: 30.h, child: CircularProgressIndicator()));
           } else if (state is EmployeeLoaded) {
             List<EmployeeModel> employees = state.employees;
 
             DateTime currentDate = DateTime.now();
             List<EmployeeModel> currentEmployees = employees
-                .where((e) =>
-                    e.dateOfLeaveCompany == null ||
-                    DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate))
+                .where((e) => e.dateOfLeaveCompany == null || DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate))
                 .toList();
 
             List<EmployeeModel> previousEmployees = employees
-                .where((e) =>
-                    e.dateOfLeaveCompany != null &&
-                    DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
+                .where((e) => e.dateOfLeaveCompany != null && DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
                 .toList();
 
             return Column(
@@ -63,28 +61,17 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                 Expanded(
                   child: ListView(
                     children: [
-                      if (currentEmployees.isNotEmpty)
-                        _buildSectionTitle(context, AppStrings.currentEmployTitle),
-                      if (currentEmployees.isNotEmpty)
-                        _buildEmployeeList(
-                          context,
-                          currentEmployees,
-                          isEmployed: true,
-                        ),
-                      if (previousEmployees.isNotEmpty)
-                        _buildSectionTitle(context, AppStrings.previousEmployTitle),
-                      if (previousEmployees.isNotEmpty)
-                        _buildEmployeeList(
-                          context,
-                          previousEmployees,
-                        ),
+                      if (currentEmployees.isNotEmpty) _buildSectionTitle(context, AppStrings.currentEmployTitle),
+                      if (currentEmployees.isNotEmpty) _buildEmployeeList(context, currentEmployees, isEmployed: true),
+                      if (previousEmployees.isNotEmpty) _buildSectionTitle(context, AppStrings.previousEmployTitle),
+                      if (previousEmployees.isNotEmpty) _buildEmployeeList(context, previousEmployees),
                     ],
                   ),
                 ),
                 Container(
                   color: Colors.grey.shade300,
                   width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.w),
                   child: Text(
                     AppStrings.swipeLeftDeleteTitle,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppColors.greyTextAccentColor),
@@ -92,18 +79,15 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                 )
               ],
             );
-          } else if (state is EmployeeError) {
-            return Center(child: Image.asset(AppImages.noDataFoundIcon));
           } else {
-            return Center(child: Image.asset(AppImages.noDataFoundIcon));
+            return Center(child: Image.asset(AppImages.noDataFoundIcon, width: 100.w, height: 100.h));
           }
         },
       ),
     );
   }
 
-  Widget _buildEmployeeList(BuildContext context, List<EmployeeModel> employees,
-      {bool isEmployed = false}) {
+  Widget _buildEmployeeList(BuildContext context, List<EmployeeModel> employees, {bool isEmployed = false}) {
     final cubit = context.read<EmployeeCubit>();
     return ListView.builder(
       shrinkWrap: true,
@@ -142,7 +126,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       color: Colors.grey.shade300,
       child: Text(
         title,

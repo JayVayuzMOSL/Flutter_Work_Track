@@ -23,8 +23,12 @@ class AppRoutes {
       case addEditEmployee:
         final args = settings.arguments as Map<String, dynamic>?; // Passing data if needed
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => getIt<AddEditEmployeeCubit>(param1: args?['employee']),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<AddEditEmployeeCubit>(param1: args?['employee'])),
+    BlocProvider(
+    create: (_) => getIt<EmployeeCubit>()..loadEmployees()),
+            ],
             child: AddEditEmployeeScreen(employee: args?['employee']), // No need to pass employee explicitly
           ),
         );

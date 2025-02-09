@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 
 final List<String> positions = [
@@ -13,15 +14,15 @@ void showPositionPicker(BuildContext context, Function(String) tapCallBack) {
     context: context,
     backgroundColor: Colors.transparent,
     builder: (_) => Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      decoration: const BoxDecoration(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
+      decoration: BoxDecoration(
         color: AppColors.whiteTextColor,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       child: ListView.separated(
         shrinkWrap: true,
         itemCount: positions.length,
-        separatorBuilder: (_, __) => const Divider(),
+        separatorBuilder: (_, __) => Divider(thickness: 1.h),
         itemBuilder: (_, index) => ListTile(
           title: Center(
             child: Text(
@@ -29,7 +30,7 @@ void showPositionPicker(BuildContext context, Function(String) tapCallBack) {
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge
-                  ?.copyWith(color: AppColors.textAccentColor),
+                  ?.copyWith(color: AppColors.textAccentColor, fontSize: 16.sp),
             ),
           ),
           onTap: () {

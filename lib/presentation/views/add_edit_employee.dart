@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_work_track/presentation/cubit/add_edit_employee_cubit.da
 import 'package:flutter_work_track/presentation/widgets/custom_date_picker.dart';
 import 'package:flutter_work_track/presentation/widgets/show_position_picker_dialog.dart';
 import 'package:flutter_work_track/routes/app_routes.dart';
-import 'package:flutter_work_track/service_locator.dart';
 
 class AddEditEmployeeScreen extends StatelessWidget {
   final EmployeeModel? employee;
@@ -20,32 +20,42 @@ class AddEditEmployeeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final addEditEmployeeCubit = context.read<AddEditEmployeeCubit>();
+    final employeeCubit = context.read<EmployeeCubit>();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(employee == null ? AppStrings.addEmployeeDetails : AppStrings.editEmployeeDetails),
+        title: Text(
+          employee == null ? AppStrings.addEmployeeDetails : AppStrings.editEmployeeDetails,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.whiteTextColor),
+        ),
         actions: employee == null
             ? null
             : [
           IconButton(
-            onPressed: () => _deleteEmployee(context),
-            icon: Image.asset(AppImages.deleteIcon, color: AppColors.whiteTextColor),
+            onPressed: () => _deleteEmployee(context, employeeCubit),
+            icon: Image.asset(
+              AppImages.deleteIcon,
+              color: AppColors.whiteTextColor,
+              width: 24.w,
+            ),
           ),
         ],
       ),
       body: BlocBuilder<AddEditEmployeeCubit, AddEditEmployeeState>(
         builder: (context, state) {
           return Padding(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+            padding: EdgeInsets.all(16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildTextField(context, state.name),
-                const SizedBox(height: 16),
-                _buildPositionPicker(context, state.position),
-                const SizedBox(height: 16),
-                _buildDatePickers(context, state.startDate, state.endDate),
+                _buildTextField(state.name, addEditEmployeeCubit),
+                SizedBox(height: 16.h),
+                _buildPositionPicker(context, state.position, addEditEmployeeCubit),
+                SizedBox(height: 16.h),
+                _buildDatePickers(state.startDate, state.endDate, addEditEmployeeCubit),
                 const Spacer(),
-                _buildFooterButtons(context),
+                _buildFooterButtons(context, addEditEmployeeCubit, employeeCubit),
               ],
             ),
           );
@@ -54,65 +64,65 @@ class AddEditEmployeeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(BuildContext context, String name) {
+  Widget _buildTextField(String name, AddEditEmployeeCubit cubit) {
     return TextFormField(
       initialValue: name,
-      onChanged: (value) => context.read<AddEditEmployeeCubit>().updateName(value),
+      onChanged: (value) => cubit.updateName(value),
       decoration: InputDecoration(
         hintText: AppStrings.employeeName,
-        prefixIcon: const Icon(Icons.person_outline, color: AppColors.primaryBlue),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+        prefixIcon: Icon(Icons.person_outline, color: AppColors.primaryBlue, size: 24.w),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
       ),
     );
   }
 
-  Widget _buildPositionPicker(BuildContext context, String? selectedPosition) {
+  Widget _buildPositionPicker(BuildContext context, String? selectedPosition, AddEditEmployeeCubit cubit) {
     return GestureDetector(
       onTap: () {
         showPositionPicker(context, (value) {
-          context.read<AddEditEmployeeCubit>().updatePosition(value);
+          cubit.updatePosition(value);
           Navigator.pop(context);
         });
       },
       child: InputDecorator(
         decoration: InputDecoration(
           hintText: AppStrings.positionTitle,
-          prefixIcon: const Icon(Icons.work_outline, color: AppColors.primaryBlue),
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+          prefixIcon: Icon(Icons.work_outline, color: AppColors.primaryBlue, size: 24.w),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(selectedPosition ?? AppStrings.selectPositionTitle),
-            Image.asset(AppImages.dropdownIcon, color: AppColors.primaryBlue),
+            Text(selectedPosition ?? AppStrings.selectPositionTitle, style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppColors.textAccentColor)),
+            Image.asset(AppImages.dropdownIcon, color: AppColors.primaryBlue, width: 24.w),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDatePickers(BuildContext context, String? startDate, String? endDate) {
+  Widget _buildDatePickers(String? startDate, String? endDate, AddEditEmployeeCubit cubit) {
     return Row(
       children: [
         CustomDatePicker(
           selectedDate: startDate ?? '',
-          onDateChanged: (date) => context.read<AddEditEmployeeCubit>().updateStartDate(date),
+          onDateChanged: (date) => cubit.updateStartDate(date),
           hintText: AppStrings.noDateTitle,
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Icon(Icons.arrow_right_alt_outlined, color: AppColors.primaryBlue, size: 20),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          child: Icon(Icons.arrow_right_alt_outlined, color: AppColors.primaryBlue, size: 20.w),
         ),
         CustomDatePicker(
           selectedDate: endDate ?? '',
-          onDateChanged: (date) => context.read<AddEditEmployeeCubit>().updateEndDate(date),
+          onDateChanged: (date) => cubit.updateEndDate(date),
           hintText: AppStrings.noDateTitle,
         ),
       ],
     );
   }
 
-  Widget _buildFooterButtons(BuildContext context) {
+  Widget _buildFooterButtons(BuildContext context, AddEditEmployeeCubit cubit, EmployeeCubit employeeCubit) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -120,12 +130,12 @@ class AddEditEmployeeScreen extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            _buildButton(AppStrings.cancelCTATitle, AppColors.greyCTACancelColor, AppColors.primaryBlue, () {
+            _buildButton(context, AppStrings.cancelCTATitle, AppColors.greyCTACancelColor, AppColors.primaryBlue, () {
               Navigator.of(context).pop();
             }),
-            const SizedBox(width: 10),
-            _buildButton(AppStrings.saveCTATitle, AppColors.primaryBlue, AppColors.whiteTextColor, () {
-              _saveEmployee(context);
+            SizedBox(width: 10.w),
+            _buildButton(context, AppStrings.saveCTATitle, AppColors.primaryBlue, AppColors.whiteTextColor, () {
+              _saveEmployee(context, cubit, employeeCubit);
             }),
           ],
         ),
@@ -133,26 +143,29 @@ class AddEditEmployeeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(String text, Color bgColor, Color textColor, VoidCallback onPressed) {
+  Widget _buildButton(BuildContext context, String text, Color bgColor, Color textColor, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: Text(text, style: TextStyle(color: textColor)),
+        padding: EdgeInsets.symmetric(vertical: 5.h),
+        child: Text(text, style: Theme.of(context).textTheme.displayMedium?.copyWith(color: textColor)),
       ),
     );
   }
 
-  void _saveEmployee(BuildContext context) {
-    final cubit = context.read<AddEditEmployeeCubit>();
+  void _saveEmployee(BuildContext context, AddEditEmployeeCubit cubit, EmployeeCubit employeeCubit) {
     final state = cubit.state;
 
     if (state.name.isEmpty || state.position == null || state.startDate == null || state.endDate == null) {
       showSnackBar(AppStrings.pleaseFillFieldsError);
+      return;
+    }
+    if(state.startDate == state.endDate){
+      showSnackBar(AppStrings.startEndDateError);
       return;
     }
 
@@ -165,22 +178,22 @@ class AddEditEmployeeScreen extends StatelessWidget {
     );
 
     if(employee!=null){
-      getIt<EmployeeCubit>().updateEmployee(newEmployee);
+      employeeCubit.updateEmployee(newEmployee);
       showSnackBar(AppStrings.employeeUpdatedSuccess);
     }else{
-      getIt<EmployeeCubit>().addEmployee(newEmployee);
+      employeeCubit.addEmployee(newEmployee);
       showSnackBar(AppStrings.employeeAddedSuccess);
     }
 
     Navigator.pushReplacementNamed(context, AppRoutes.home);
   }
 
-  void _deleteEmployee(BuildContext context) {
-    getIt<EmployeeCubit>().deleteEmployee(employee!.id);
+  void _deleteEmployee(BuildContext context, EmployeeCubit employeeCubit,) {
+    employeeCubit.deleteEmployee(employee!.id);
     showSnackBar(AppStrings.empDeletedSuccessTitle,snackbarAction: SnackBarAction(
       label: AppStrings.undoTitle,
       onPressed: () {
-        getIt<EmployeeCubit>().addEmployee(employee!,undoItem: true);
+        employeeCubit.addEmployee(employee!,undoItem: true);
       },
     ));
     Navigator.pushReplacementNamed(context, AppRoutes.home);
