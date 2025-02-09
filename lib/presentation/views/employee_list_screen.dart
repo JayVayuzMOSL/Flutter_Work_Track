@@ -48,13 +48,18 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
             List<EmployeeModel> employees = state.employees;
 
             DateTime currentDate = DateTime.now();
+
             List<EmployeeModel> currentEmployees = employees
-                .where((e) => e.dateOfLeaveCompany == null || DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate))
+                .where((e) => e.dateOfLeaveCompany == null ||
+                DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate) ||
+                DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAtSameMomentAs(currentDate))
                 .toList();
 
             List<EmployeeModel> previousEmployees = employees
-                .where((e) => e.dateOfLeaveCompany != null && DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
+                .where((e) => e.dateOfLeaveCompany != null &&
+                DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
                 .toList();
+
 
             return Column(
               children: [
