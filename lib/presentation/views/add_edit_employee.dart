@@ -5,6 +5,7 @@ import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/presentation/cubit/add_edit_employee_state.dart';
 import 'package:flutter_work_track/presentation/cubit/employee_cubit.dart';
@@ -169,7 +170,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
       showSnackBar(AppStrings.startEndDateError);
       return;
     }
-    if(DateFormat("d MMM yyyy").parse(state.startDate!).isAfter(DateFormat("d MMM yyyy").parse(state.endDate!))){
+    if(state.startDate!.toDate().isAfter(state.endDate!.toDate())){
       showSnackBar(AppStrings.startBeforeDate);
       return;
     }

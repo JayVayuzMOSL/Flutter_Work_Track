@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
+import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/presentation/widgets/date_dialog_widget.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDatePicker extends StatelessWidget {
@@ -55,7 +55,7 @@ class CustomDatePicker extends StatelessWidget {
   formatDate(){
     DateTime now = DateTime.now();
     if(selectedDate.isNotEmpty){
-      DateTime initialDate = selectedDate.isNotEmpty?DateFormat('d MMM yyyy').parse(selectedDate.toString()):now;
+      DateTime initialDate = selectedDate.toDate();
       return initialDate.year == now.year &&
           initialDate.month == now.month &&
           initialDate.day == now.day

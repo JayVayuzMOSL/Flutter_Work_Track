@@ -5,6 +5,7 @@ import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/presentation/cubit/employee_cubit.dart';
 import 'package:flutter_work_track/presentation/cubit/employee_state.dart';
@@ -51,11 +52,11 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
             currentDate = DateTime(currentDate.year, currentDate.month, currentDate.day);
 
             List<EmployeeModel> currentEmployees = employees
-                .where((e) => e.dateOfLeaveCompany == null || DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAfter(currentDate) || DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isAtSameMomentAs(currentDate))
+                .where((e) => e.dateOfLeaveCompany.isEmpty || e.dateOfLeaveCompany.toDate().isAfter(currentDate) || e.dateOfLeaveCompany.toDate().isAtSameMomentAs(currentDate))
                 .toList();
 
             List<EmployeeModel> previousEmployees = employees
-                .where((e) => e.dateOfLeaveCompany != null && DateFormat("d MMM yyyy").parse(e.dateOfLeaveCompany).isBefore(currentDate))
+                .where((e) => e.dateOfLeaveCompany.isNotEmpty && e.dateOfLeaveCompany.toDate().isBefore(currentDate))
                 .toList();
 
 

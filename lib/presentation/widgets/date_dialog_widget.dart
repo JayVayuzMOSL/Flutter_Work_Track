@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
@@ -9,7 +9,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
     String? selectedDate, Function(String) onDaySelected) async {
   DateTime now = DateTime.now();
   ValueNotifier<DateTime> focusedDayNotifier = ValueNotifier(
-      selectedDate!.isNotEmpty ? DateFormat('d MMM yyyy').parse(selectedDate) : now);
+      selectedDate!.isNotEmpty ? selectedDate.toDate() : now);
 
   await showDialog(
     context: context,
@@ -81,7 +81,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                         onPageChanged: (focusedDay) {
                           focusedDayNotifier.value = focusedDay;
                         },
-                        calendarStyle: CalendarStyle(
+                        calendarStyle: const CalendarStyle(
                           selectedDecoration: BoxDecoration(
                             color: AppColors.primaryBlue,
                             shape: BoxShape.circle,
@@ -108,7 +108,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                           Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: 20.sp),
                           SizedBox(width: 8.w),
                           Text(
-                            DateFormat('d MMM yyyy').format(selectedDateValue),
+                            selectedDateValue.toDateString(),
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               color: AppColors.textAccentColor,
                               fontSize: 14.sp,
@@ -131,7 +131,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                               AppColors.primaryBlue,
                               AppColors.whiteTextColor,
                                   () {
-                                onDaySelected(DateFormat('d MMM yyyy').format(selectedDateValue));
+                                onDaySelected(selectedDateValue.toDateString());
                                 Navigator.of(context).pop();
                               }),
                         ],
