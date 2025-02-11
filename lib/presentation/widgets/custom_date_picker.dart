@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/presentation/widgets/date_dialog_widget.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomDatePicker extends StatelessWidget {
   final String selectedDate;
@@ -23,7 +23,7 @@ class CustomDatePicker extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () async {
-          datePickerDialog(context, pageController, selectedDate, (value){
+          datePickerDialog(context, pageController, selectedDate, (value) {
             onDateChanged(value);
           });
         },
@@ -45,20 +45,21 @@ class CustomDatePicker extends StatelessWidget {
           ),
           child: Text(
             formatDate(),
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.textAccentColor),
+            style:
+                Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.textAccentColor),
           ),
         ),
       ),
     );
   }
 
-  formatDate(){
+  formatDate() {
     DateTime now = DateTime.now();
-    if(selectedDate.isNotEmpty){
+    if (selectedDate.isNotEmpty) {
       DateTime initialDate = selectedDate.toDate();
       return initialDate.year == now.year &&
-          initialDate.month == now.month &&
-          initialDate.day == now.day
+              initialDate.month == now.month &&
+              initialDate.day == now.day
           ? "Today"
           : selectedDate.toString();
     }

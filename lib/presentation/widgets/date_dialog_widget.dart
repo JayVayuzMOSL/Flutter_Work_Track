@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_work_track/core/constants/extensions.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/extensions.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 Future<void> datePickerDialog(BuildContext context, PageController pageController,
     String? selectedDate, Function(String) onDaySelected) async {
   DateTime now = DateTime.now();
-  ValueNotifier<DateTime> focusedDayNotifier = ValueNotifier(
-      selectedDate!.isNotEmpty ? selectedDate.toDate() : now);
+  ValueNotifier<DateTime> focusedDayNotifier =
+      ValueNotifier(selectedDate!.isNotEmpty ? selectedDate.toDate() : now);
 
   await showDialog(
     context: context,
@@ -29,21 +29,17 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                     children: [
                       Row(
                         children: [
-                          _buildPresetButton(
-                              context,
-                              focusedDayValue,
-                              AppStrings.today,
-                              now,
-                                  (date) {
-                                focusedDayNotifier.value = date;
-                              }),
+                          _buildPresetButton(context, focusedDayValue, AppStrings.today, now,
+                              (date) {
+                            focusedDayNotifier.value = date;
+                          }),
                           SizedBox(width: 8.w),
                           _buildPresetButton(
                             context,
                             focusedDayValue,
                             AppStrings.nextMonday,
                             _getNextWeekday(now, DateTime.monday),
-                                (date) {
+                            (date) {
                               focusedDayNotifier.value = date;
                             },
                           ),
@@ -52,14 +48,12 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                       SizedBox(height: 8.h),
                       Row(
                         children: [
-                          _buildPresetButton(
-                              context, focusedDayValue, AppStrings.nextTuesday,
+                          _buildPresetButton(context, focusedDayValue, AppStrings.nextTuesday,
                               _getNextWeekday(now, DateTime.tuesday), (date) {
                             focusedDayNotifier.value = date;
                           }),
                           SizedBox(width: 8.w),
-                          _buildPresetButton(
-                              context, focusedDayValue, AppStrings.afterOneWeek,
+                          _buildPresetButton(context, focusedDayValue, AppStrings.afterOneWeek,
                               now.add(const Duration(days: 7)), (date) {
                             focusedDayNotifier.value = date;
                           }),
@@ -71,7 +65,8 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                         lastDay: DateTime(2100),
                         focusedDay: focusedDayValue,
                         headerVisible: true,
-                        headerStyle: const HeaderStyle(formatButtonVisible: false, titleCentered: true),
+                        headerStyle:
+                            const HeaderStyle(formatButtonVisible: false, titleCentered: true),
                         currentDay: focusedDayValue,
                         calendarFormat: CalendarFormat.month,
                         onDaySelected: (selectedDay, focusedDay) {
@@ -110,9 +105,9 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                           Text(
                             selectedDateValue.toDateString(),
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              color: AppColors.textAccentColor,
-                              fontSize: 14.sp,
-                            ),
+                                  color: AppColors.textAccentColor,
+                                  fontSize: 14.sp,
+                                ),
                           ),
                         ],
                       ),
@@ -123,17 +118,13 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                               AppStrings.cancelCTATitle,
                               AppColors.greyCTACancelColor,
                               AppColors.primaryBlue,
-                                  () => Navigator.of(context).pop()),
+                              () => Navigator.of(context).pop()),
                           SizedBox(width: 10.w),
-                          _buildButton(
-                              context,
-                              AppStrings.saveCTATitle,
-                              AppColors.primaryBlue,
-                              AppColors.whiteTextColor,
-                                  () {
-                                onDaySelected(selectedDateValue.toDateString());
-                                Navigator.of(context).pop();
-                              }),
+                          _buildButton(context, AppStrings.saveCTATitle, AppColors.primaryBlue,
+                              AppColors.whiteTextColor, () {
+                            onDaySelected(selectedDateValue.toDateString());
+                            Navigator.of(context).pop();
+                          }),
                         ],
                       ),
                     ],
@@ -148,17 +139,15 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
   );
 }
 
-Widget _buildPresetButton(
-    BuildContext context, DateTime? initialDate, String label, DateTime date, Function(dynamic) callback) {
+Widget _buildPresetButton(BuildContext context, DateTime? initialDate, String label, DateTime date,
+    Function(dynamic) callback) {
   return Expanded(
     child: ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: currentIsSameDay(initialDate, date)
-            ? AppColors.primaryBlue
-            : AppColors.whiteTextColor,
-        foregroundColor: currentIsSameDay(initialDate, date)
-            ? AppColors.whiteTextColor
-            : AppColors.primaryBlue,
+        backgroundColor:
+            currentIsSameDay(initialDate, date) ? AppColors.primaryBlue : AppColors.whiteTextColor,
+        foregroundColor:
+            currentIsSameDay(initialDate, date) ? AppColors.whiteTextColor : AppColors.primaryBlue,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
       ),
       onPressed: () {
@@ -167,11 +156,11 @@ Widget _buildPresetButton(
       child: Text(
         label,
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: currentIsSameDay(initialDate, date)
-              ? AppColors.whiteTextColor
-              : AppColors.primaryBlue,
-          fontSize: 13.sp,
-        ),
+              color: currentIsSameDay(initialDate, date)
+                  ? AppColors.whiteTextColor
+                  : AppColors.primaryBlue,
+              fontSize: 13.sp,
+            ),
       ),
     ),
   );
@@ -179,8 +168,8 @@ Widget _buildPresetButton(
 
 bool currentIsSameDay(DateTime? initialDate, DateTime date) =>
     initialDate!.year == date.year &&
-        initialDate.month == date.month &&
-        initialDate.day == date.day;
+    initialDate.month == date.month &&
+    initialDate.day == date.day;
 
 DateTime _getNextWeekday(DateTime date, int weekday) {
   int daysToAdd = (weekday - date.weekday + 7) % 7;
@@ -199,9 +188,9 @@ Widget _buildButton(
       child: Text(
         text,
         style: Theme.of(context).textTheme.displayMedium?.copyWith(
-          color: textColor,
-          fontSize: 14.sp,
-        ),
+              color: textColor,
+              fontSize: 14.sp,
+            ),
       ),
     ),
   );

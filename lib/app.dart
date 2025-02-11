@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/routes/app_routes.dart';
+
 import 'core/constants/app_constants.dart';
 import 'core/constants/app_styles.dart';
 
@@ -17,7 +18,8 @@ class WorkTrackApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: appTheme,
           scaffoldMessengerKey: scaffoldMessengerKey,
-          initialRoute: AppRoutes.home, // Start from Home Screen
+          initialRoute: AppRoutes.home,
+          // Start from Home Screen
           onGenerateRoute: AppRoutes.generateRoute, // Handle named routes
         );
       },

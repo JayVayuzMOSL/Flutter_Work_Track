@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_work_track/presentation/cubit/add_edit_employee_cubit.dart';
 import 'package:flutter_work_track/presentation/cubit/employee_cubit.dart';
-import 'package:flutter_work_track/presentation/views/employee_list_screen.dart';
 import 'package:flutter_work_track/presentation/views/add_edit_employee.dart';
+import 'package:flutter_work_track/presentation/views/employee_list_screen.dart';
 import 'package:flutter_work_track/service_locator.dart';
 
 class AppRoutes {
@@ -26,10 +26,10 @@ class AppRoutes {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => getIt<AddEditEmployeeCubit>(param1: args?['employee'])),
-    BlocProvider(
-    create: (_) => getIt<EmployeeCubit>()..loadEmployees()),
+              BlocProvider(create: (_) => getIt<EmployeeCubit>()..loadEmployees()),
             ],
-            child: AddEditEmployeeScreen(employee: args?['employee']), // No need to pass employee explicitly
+            child: AddEditEmployeeScreen(
+                employee: args?['employee']), // No need to pass employee explicitly
           ),
         );
 

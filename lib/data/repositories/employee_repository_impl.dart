@@ -1,6 +1,6 @@
-import 'package:hive/hive.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/data/repositories/employee_repository.dart';
+import 'package:hive/hive.dart';
 
 class EmployeeRepositoryImpl implements EmployeeRepository {
   static final EmployeeRepositoryImpl _instance = EmployeeRepositoryImpl._internal();

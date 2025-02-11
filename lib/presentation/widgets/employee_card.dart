@@ -25,20 +25,19 @@ class EmployeeCard extends StatefulWidget {
 
 class _EmployeeCardState extends State<EmployeeCard> {
   bool isDismissed = false;
+
   @override
   Widget build(BuildContext context) {
     if (isDismissed) return SizedBox.shrink();
     return GestureDetector(
         onTap: () {
-          Navigator.pushNamed(
-              context,
-              AppRoutes.addEditEmployee,
-              arguments: {"employee": widget.employee}
-          );
+          Navigator.pushNamed(context, AppRoutes.addEditEmployee,
+              arguments: {"employee": widget.employee});
         },
         child: Dismissible(
           key: ValueKey(widget.employee.id),
-          direction: DismissDirection.endToStart, // Swipe from right to left
+          direction: DismissDirection.endToStart,
+          // Swipe from right to left
           background: Container(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             alignment: Alignment.centerRight,
@@ -62,17 +61,17 @@ class _EmployeeCardState extends State<EmployeeCard> {
                 Text(
                   widget.employee.name,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: AppColors.textAccentColor,
-                    fontSize: 16.sp,
-                  ),
+                        color: AppColors.textAccentColor,
+                        fontSize: 16.sp,
+                      ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
                   widget.employee.position,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.greyTextAccentColor,
-                    fontSize: 14.sp,
-                  ),
+                        color: AppColors.greyTextAccentColor,
+                        fontSize: 14.sp,
+                      ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
@@ -80,9 +79,9 @@ class _EmployeeCardState extends State<EmployeeCard> {
                       ? 'From ${widget.employee.dateOfJoining}'
                       : '${widget.employee.dateOfJoining} - ${widget.employee.dateOfLeaveCompany}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.greyTextAccentColor,
-                    fontSize: 12.sp,
-                  ),
+                        color: AppColors.greyTextAccentColor,
+                        fontSize: 12.sp,
+                      ),
                 ),
               ],
             ),

@@ -16,10 +16,9 @@ class EmployeeCubit extends Cubit<EmployeeState> {
     safeEmit(EmployeeLoading());
     try {
       final employees = _employeeRepository.getAllEmployees();
-      if(employees.isEmpty){
+      if (employees.isEmpty) {
         safeEmit(EmployeeError('No Employees Found'));
-      }
-      else {
+      } else {
         safeEmit(EmployeeLoaded(employees));
       }
     } catch (e) {
@@ -28,7 +27,7 @@ class EmployeeCubit extends Cubit<EmployeeState> {
   }
 
   /// Add a new employee
-  Future<void> addEmployee(EmployeeModel employee,{bool undoItem=false}) async {
+  Future<void> addEmployee(EmployeeModel employee, {bool undoItem = false}) async {
     await _employeeRepository.addEmployee(employee);
     await loadEmployees();
   }

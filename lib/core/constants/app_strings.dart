@@ -1,9 +1,9 @@
-class AppStrings{
+class AppStrings {
   static const String currentEmployTitle = "Current Employee";
-  static const String previousEmployTitle= "Previous Employee";
-  static const String noEmployeeFoundTitle= "No Employee Found";
-  static const String undoTitle= "UNDO";
-  static const String empDeletedSuccessTitle= "Employee Deleted Successfully";
+  static const String previousEmployTitle = "Previous Employee";
+  static const String noEmployeeFoundTitle = "No Employee Found";
+  static const String undoTitle = "UNDO";
+  static const String empDeletedSuccessTitle = "Employee Deleted Successfully";
   static const String swipeLeftDeleteTitle = "Swipe Left to Delete";
   static const String employeeListTitle = "Employee List";
   static const String employeeName = 'Employee name';
