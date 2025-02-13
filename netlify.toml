@@ -1,3 +1,8 @@
 [build]
 command = "flutter build web --release"
 publish = "build/web"
+
+[build.environment]
+NODE_VERSION = "20"
+NPM_VERSION = "9"
+FLUTTER_VERSION = "stable"
