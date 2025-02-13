@@ -101,7 +101,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
                     .textTheme
                     .bodyLarge
                     ?.copyWith(color: AppColors.textAccentColor)),
-            Image.asset(AppImages.dropdownIcon, color: AppColors.primaryBlue, width: 24.w),
+            Image.asset(AppImages.dropdownIcon, color: AppColors.primaryBlue, width: wRes(24)),
           ],
         ),
       ),
