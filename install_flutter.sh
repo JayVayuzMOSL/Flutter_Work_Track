@@ -1,29 +1,38 @@
 #!/bin/bash
 
-# Exit on first error
+# Exit immediately if a command exits with a non-zero status
 set -e
 
-echo "Updating system packages..."
-sudo apt-get update -y
-sudo apt-get install -y curl unzip git xz-utils zip libglu1-mesa
+# Define Flutter version (change this if needed)
+FLUTTER_VERSION="3.19.0"
+FLUTTER_ARCHIVE="flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+FLUTTER_URL="https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/${FLUTTER_ARCHIVE}"
 
-echo "Downloading Flutter..."
-FLUTTER_VERSION="3.16.3"  # Replace with the latest stable version
-curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+# Install dependencies
+echo "Installing dependencies..."
+sudo apt-get update
+sudo apt-get install -y curl unzip xz-utils git
 
+# Download Flutter SDK
+echo "Downloading Flutter SDK..."
+curl -o $FLUTTER_ARCHIVE $FLUTTER_URL
+
+# Extract Flutter
 echo "Extracting Flutter..."
-tar -xf flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+tar -xf $FLUTTER_ARCHIVE
 
-echo "Moving Flutter to Home directory..."
-mv flutter $HOME/flutter
+# Move Flutter to the correct location
+export PATH="$PWD/flutter/bin:$PATH"
 
-echo "Adding Flutter to PATH..."
-export PATH="$HOME/flutter/bin:$PATH"
+# Verify Flutter installation
+echo "Flutter version:"
+flutter --version
 
-echo "Enabling Flutter Web..."
-flutter config --enable-web
+# Accept Flutter licenses
+echo "Accepting Flutter licenses..."
+yes | flutter doctor --android-licenses || true
 
-echo "Fetching Flutter dependencies..."
-flutter pub get
+# Run Flutter Doctor
+flutter doctor
 
-echo "Flutter installed successfully!"
+echo "Flutter installation completed successfully!"
