@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/routes/app_routes.dart';
 
@@ -39,14 +40,14 @@ class _EmployeeCardState extends State<EmployeeCard> {
           direction: DismissDirection.endToStart,
           // Swipe from right to left
           background: Container(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: wRes(20)),
             alignment: Alignment.centerRight,
             color: AppColors.redBackgroundColor, // Background color when swiped
             child: Image.asset(
               AppImages.deleteIcon,
               color: AppColors.whiteTextColor,
-              width: 24.w,
-              height: 24.h,
+              width: wRes(24),
+              height: hRes(24),
             ),
           ),
           onDismissed: (direction) {
@@ -54,7 +55,7 @@ class _EmployeeCardState extends State<EmployeeCard> {
             widget.onDelete(); // Remove employee from list
           },
           child: Padding(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(wRes(16)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -62,25 +63,25 @@ class _EmployeeCardState extends State<EmployeeCard> {
                   widget.employee.name,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.textAccentColor,
-                        fontSize: 16.sp,
+                        fontSize: spRes(16),
                       ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: hRes(4)),
                 Text(
                   widget.employee.position,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         color: AppColors.greyTextAccentColor,
-                        fontSize: 14.sp,
+                        fontSize: spRes(14),
                       ),
                 ),
-                SizedBox(height: 4.h),
+                SizedBox(height: hRes(4)),
                 Text(
                   widget.isEmployed
                       ? 'From ${widget.employee.dateOfJoining}'
                       : '${widget.employee.dateOfJoining} - ${widget.employee.dateOfLeaveCompany}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.greyTextAccentColor,
-                        fontSize: 12.sp,
+                        fontSize: spRes(12),
                       ),
                 ),
               ],

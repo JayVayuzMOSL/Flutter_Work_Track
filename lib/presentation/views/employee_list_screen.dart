@@ -5,6 +5,7 @@ import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/presentation/cubit/employee_cubit.dart';
@@ -27,7 +28,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
       appBar: AppBar(
         title: Text(
           AppStrings.employeeListTitle,
-          style: GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w500),
+          style: GoogleFonts.roboto(fontSize: spRes(18), fontWeight: FontWeight.w500),
         ),
         leading: Container(),
         leadingWidth: 0,
@@ -38,14 +39,14 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
           context.read<EmployeeCubit>().loadEmployees(); // Refresh list after returning
         },
         backgroundColor: AppColors.primaryBlue,
-        child: Icon(Icons.add, color: AppColors.whiteTextColor, size: 24.sp),
+        child: Icon(Icons.add, color: AppColors.whiteTextColor, size: spRes(24)),
       ),
       body: BlocBuilder<EmployeeCubit, EmployeeState>(
         bloc: context.watch<EmployeeCubit>()..loadEmployees(),
         builder: (context, state) {
           if (state is EmployeeLoading) {
             return Center(
-                child: SizedBox(width: 30.w, height: 30.h, child: CircularProgressIndicator()));
+                child: SizedBox(width: wRes(30), height: hRes(30), child: CircularProgressIndicator()));
           } else if (state is EmployeeLoaded) {
             List<EmployeeModel> employees = state.employees;
 
@@ -84,7 +85,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
                 Container(
                   color: Colors.grey.shade300,
                   width: double.infinity,
-                  padding: EdgeInsets.all(20.w),
+                  padding: EdgeInsets.all(wRes(20)),
                   child: Text(
                     AppStrings.swipeLeftDeleteTitle,
                     style: Theme.of(context)
@@ -97,7 +98,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
             );
           } else {
             return Center(
-                child: Image.asset(AppImages.noDataFoundIcon, width: 100.w, height: 100.h));
+                child: Image.asset(AppImages.noDataFoundIcon, width: wRes(100), height: hRes(100)));
           }
         },
       ),
@@ -144,7 +145,7 @@ class _EmployeeListScreenState extends State<EmployeeListScreen> {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(wRes(16)),
       color: Colors.grey.shade300,
       child: Text(
         title,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -17,7 +18,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
       return Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
         child: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all(wRes(16)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -33,7 +34,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                               (date) {
                             focusedDayNotifier.value = date;
                           }),
-                          SizedBox(width: 8.w),
+                          SizedBox(width: wRes(8)),
                           _buildPresetButton(
                             context,
                             focusedDayValue,
@@ -52,7 +53,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                               _getNextWeekday(now, DateTime.tuesday), (date) {
                             focusedDayNotifier.value = date;
                           }),
-                          SizedBox(width: 8.w),
+                          SizedBox(width: wRes(8)),
                           _buildPresetButton(context, focusedDayValue, AppStrings.afterOneWeek,
                               now.add(const Duration(days: 7)), (date) {
                             focusedDayNotifier.value = date;
@@ -100,13 +101,13 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: 20.sp),
-                          SizedBox(width: 8.w),
+                          Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: spRes(20)),
+                          SizedBox(width: wRes(8)),
                           Text(
                             selectedDateValue.toDateString(),
                             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                                   color: AppColors.textAccentColor,
-                                  fontSize: 14.sp,
+                                  fontSize: spRes(14),
                                 ),
                           ),
                         ],
@@ -119,7 +120,7 @@ Future<void> datePickerDialog(BuildContext context, PageController pageControlle
                               AppColors.greyCTACancelColor,
                               AppColors.primaryBlue,
                               () => Navigator.of(context).pop()),
-                          SizedBox(width: 10.w),
+                          SizedBox(width: wRes(10)),
                           _buildButton(context, AppStrings.saveCTATitle, AppColors.primaryBlue,
                               AppColors.whiteTextColor, () {
                             onDaySelected(selectedDateValue.toDateString());
@@ -159,7 +160,7 @@ Widget _buildPresetButton(BuildContext context, DateTime? initialDate, String la
               color: currentIsSameDay(initialDate, date)
                   ? AppColors.whiteTextColor
                   : AppColors.primaryBlue,
-              fontSize: 13.sp,
+              fontSize: spRes(13),
             ),
       ),
     ),
@@ -182,14 +183,14 @@ Widget _buildButton(
     onPressed: onPressed,
     color: color,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
-    minWidth: 60.w,
+    minWidth: wRes(60),
     child: Padding(
       padding: EdgeInsets.symmetric(vertical: 5.h),
       child: Text(
         text,
         style: Theme.of(context).textTheme.displayMedium?.copyWith(
               color: textColor,
-              fontSize: 14.sp,
+              fontSize: spRes(14),
             ),
       ),
     ),

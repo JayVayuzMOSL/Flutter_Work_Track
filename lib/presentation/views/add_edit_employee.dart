@@ -5,6 +5,7 @@ import 'package:flutter_work_track/core/constants/app_colors.dart';
 import 'package:flutter_work_track/core/constants/app_constants.dart';
 import 'package:flutter_work_track/core/constants/app_images.dart';
 import 'package:flutter_work_track/core/constants/app_strings.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/data/models/employee_model.dart';
 import 'package:flutter_work_track/presentation/cubit/add_edit_employee_cubit.dart';
@@ -38,7 +39,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
                   icon: Image.asset(
                     AppImages.deleteIcon,
                     color: AppColors.whiteTextColor,
-                    width: 24.w,
+                    width: wRes(24),
                   ),
                 ),
               ],
@@ -51,9 +52,9 @@ class AddEditEmployeeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildTextField(state.name, addEditEmployeeCubit),
-                SizedBox(height: 16.h),
+                SizedBox(height: hRes(16)),
                 _buildPositionPicker(context, state.position, addEditEmployeeCubit),
-                SizedBox(height: 16.h),
+                SizedBox(height: hRes(16)),
                 _buildDatePickers(state.startDate, state.endDate, addEditEmployeeCubit),
                 const Spacer(),
                 _buildFooterButtons(context, addEditEmployeeCubit, employeeCubit),
@@ -71,7 +72,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
       onChanged: (value) => cubit.updateName(value),
       decoration: InputDecoration(
         hintText: AppStrings.employeeName,
-        prefixIcon: Icon(Icons.person_outline, color: AppColors.primaryBlue, size: 24.w),
+        prefixIcon: Icon(Icons.person_outline, color: AppColors.primaryBlue, size: wRes(24)),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
       ),
     );
@@ -89,7 +90,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
       child: InputDecorator(
         decoration: InputDecoration(
           hintText: AppStrings.positionTitle,
-          prefixIcon: Icon(Icons.work_outline, color: AppColors.primaryBlue, size: 24.w),
+          prefixIcon: Icon(Icons.work_outline, color: AppColors.primaryBlue, size: wRes(24)),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
         ),
         child: Row(
@@ -141,7 +142,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
                 AppColors.primaryBlue, () {
               Navigator.of(context).pop();
             }),
-            SizedBox(width: 10.w),
+            SizedBox(width: wRes(10)),
             _buildButton(
                 context, AppStrings.saveCTATitle, AppColors.primaryBlue, AppColors.whiteTextColor,
                 () {
@@ -162,7 +163,7 @@ class AddEditEmployeeScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6.r)),
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 5.h),
+        padding: EdgeInsets.symmetric(vertical: hRes(5)),
         child: Text(text,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(color: textColor)),
       ),

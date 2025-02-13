@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 import 'package:flutter_work_track/core/constants/extensions.dart';
 import 'package:flutter_work_track/presentation/widgets/date_dialog_widget.dart';
 
@@ -29,18 +30,18 @@ class CustomDatePicker extends StatelessWidget {
         },
         child: InputDecorator(
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: 20.w),
+            prefixIcon: Icon(Icons.calendar_today, color: AppColors.primaryBlue, size: wRes(20)),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: Colors.grey, width: 1.5.w),
+              borderSide: BorderSide(color: Colors.grey, width: wRes(1.5)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: AppColors.primaryBlue, width: 1.5.w),
+              borderSide: BorderSide(color: AppColors.primaryBlue, width: wRes(1.5)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.r),
-              borderSide: BorderSide(color: Colors.green, width: 2.w),
+              borderSide: BorderSide(color: Colors.green, width: wRes(2)),
             ),
           ),
           child: Text(

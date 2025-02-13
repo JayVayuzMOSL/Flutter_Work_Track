@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_work_track/core/constants/app_colors.dart';
+import 'package:flutter_work_track/core/constants/app_styles.dart';
 
 final List<String> positions = [
   "Product Designer",
@@ -30,7 +31,7 @@ void showPositionPicker(BuildContext context, Function(String) tapCallBack) {
               style: Theme.of(context)
                   .textTheme
                   .bodyLarge
-                  ?.copyWith(color: AppColors.textAccentColor, fontSize: 16.sp),
+                  ?.copyWith(color: AppColors.textAccentColor, fontSize: spRes(16)),
             ),
           ),
           onTap: () {
