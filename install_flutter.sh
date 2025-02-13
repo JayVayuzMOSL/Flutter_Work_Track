@@ -3,23 +3,27 @@
 # Exit on first error
 set -e
 
-# Install dependencies
+echo "Updating system packages..."
 sudo apt-get update -y
 sudo apt-get install -y curl unzip git xz-utils zip libglu1-mesa
 
-# Download and install Flutter
-FLUTTER_VERSION="3.16.3"  # Update to latest stable version
+echo "Downloading Flutter..."
+FLUTTER_VERSION="3.16.3"  # Replace with the latest stable version
 curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_$FLUTTER_VERSION-stable.tar.xz
+
+echo "Extracting Flutter..."
 tar -xf flutter_linux_$FLUTTER_VERSION-stable.tar.xz
 
-# Move Flutter to home directory
+echo "Moving Flutter to Home directory..."
 mv flutter $HOME/flutter
 
-# Add Flutter to PATH
+echo "Adding Flutter to PATH..."
 export PATH="$HOME/flutter/bin:$PATH"
 
-# Enable Flutter for Web
+echo "Enabling Flutter Web..."
 flutter config --enable-web
 
-# Get dependencies
+echo "Fetching Flutter dependencies..."
 flutter pub get
+
+echo "Flutter installed successfully!"

@@ -3,4 +3,4 @@
     publish = "build/web"
 
 [build.environment]
-    FLUTTER_VERSION = "3.16.3" # Use latest stable version
+    FLUTTER_VERSION = "3.19.3" # Use latest stable version
